@@ -1,0 +1,163 @@
+# The general discovery agenda — a compass, never a script.
+#
+# For any subject whose work moves through other people's hands: a designer, a founder,
+# a studio of one. Same method as the patternmaker agenda, no domain vocabulary.
+#
+# The spine is identical across subjects on purpose: cb-1..cb-4 and role-1 are asked word for
+# word of everyone, so two control maps can be laid side by side. Everything else is this
+# subject's overlay.
+#
+# priority: core     — counted by the stop condition
+#           optional — depth if the conversation has room
+# mode: discovery     — about their work, past behaviour
+#       concept-test  — about the thing we are building; their answers are imagined
+
+subject: generic
+role: designer / founder
+tool_under_study: whatever they actually use
+
+opening:
+  - id: op-1
+    jp: "今日はお時間をいただいて、ありがとうございます。いま手がけている仕事で、最近いちばん面白かったものは何ですか"
+    en: "Thanks for the time. What has been the most interesting thing you worked on recently?"
+  - id: op-2
+    jp: "一日のうちで、いちばん集中できるのはどんな時間帯ですか"
+    en: "Which part of the day do you concentrate best in?"
+
+sections:
+  - id: work-shape
+    title_jp: 仕事の流れ
+    priority: core
+    mode: discovery
+    goal: one project from first contact to delivery — where the work actually starts
+    items:
+      - id: wk-1
+        jp: "最近の仕事を一つ、最初の相談から納品まで、実際の順番で辿っていただけますか"
+        en: "Take one recent project and walk me through it, first contact to delivery, in the order it actually happened."
+        probes:
+          - jp: "その中で、いちばん時間がかかるのはどの部分ですか"
+            en: "Which part takes the longest?"
+      - id: wk-2
+        jp: "最近で、いちばん早く終わった仕事はどれでしたか。何が違いましたか"
+        en: "Which recent project finished fastest, and what was different about it?"
+        note: "speed asked as a contrast on a real case, never as an opinion"
+      - id: wk-3
+        jp: "その仕事で、あなたが実際に手を動かしている時間は、全体のどのくらいですか"
+        en: "In that project, how much of the time were you actually making the thing, versus everything else?"
+  - id: handoffs
+    title_jp: 受け渡し
+    priority: core
+    mode: discovery
+    goal: what arrives from outside, what leaves, and what gets lost in between
+    items:
+      - id: hd-1
+        jp: "外から何かを受け取って仕事を始めることはありますか。最後に受け取ったものを、順番に辿っていただけますか"
+        en: "Do you start work from something someone else sends you? Take the last one and walk me through it."
+        probes:
+          - jp: "受け取った時点で『これ、足りない』と思うことはありますか"
+            en: "Do you ever find it incomplete on arrival?"
+      - id: hd-2
+        jp: "そのファイルは、ふだんどこに置いてありますか。ほかの人が開くとき、どうやって探しますか"
+        en: "Where does that file live? When someone else opens it, how do they find it?"
+        probes:
+          - jp: "いま使っているのが最新だと、どうやって分かりますか"
+            en: "How do you know which one is current?"
+      - id: hd-3
+        jp: "サンプルや試作が戻ってきたとき、誰が直して、その判定はどうやってあなたのところまで届きますか"
+        en: "When a sample or prototype comes back, who changes it and how does the verdict reach you?"
+        probes:
+          - jp: "最初のサンプルができるまで、ふつう何日くらいかかりますか"
+            en: "How many days until the first sample exists?"
+  - id: who-and-how
+    title_jp: 誰に、どう届くか
+    priority: optional
+    mode: discovery
+    goal: the route information travels, and what the person at the far end holds
+    items:
+      - id: pp-1
+        jp: "その話は、誰がいちばん最初に知りますか。どんな経路で、あなたのところまで来ますか"
+        en: "Who hears about it first, and by what route does it reach you?"
+      - id: pp-2
+        jp: "一緒に仕事をしている人は、何を見ながら作業していますか"
+        en: "What are the people you work with looking at while they work?"
+        note: "second-hand: they report someone else's setup, not their own"
+  - id: org-and-roles
+    title_jp: チームと役割
+    priority: optional
+    mode: discovery
+    goal: how many hands touch one project, who approves it, how a newcomer learns
+    items:
+      - id: og-1
+        jp: "ひとつの仕事に、あなた以外に何人くらい関わりますか。どんなふうに分けますか"
+        en: "How many people besides you touch one project, and how is it split?"
+      - id: og-2
+        jp: "最後にOKを出すのは誰ですか。その人が見る前に、誰かが先に見ますか"
+        en: "Who gives the final approval? Does anyone look before them?"
+      - id: og-3
+        jp: "この数年で、この仕事のなかでなくなった作業はありますか。それは、どこへ行きましたか"
+        en: "In the last few years, what work has disappeared from this job? Where did it go?"
+  - id: control-boundary
+    title_jp: 統制の境界
+    priority: core
+    mode: concept-test
+    boundary_jp: "ここからは、私が作っているものの話をさせてください。実際に見た経験ではなく、想像で構いません"
+    goal: where review stops paying — how much an agent may decide before checking costs more than doing
+    note: "the spine. These ids and these questions are identical for every subject, so the maps are comparable."
+    items:
+      - id: cb-1
+        jp: "人が作ったものを、受け取ったとき、どこから見ますか。次にどこを見ますか"
+        en: "When you receive something someone else made, where do you look first, and then what?"
+        note: "role-neutral by design"
+        probes:
+          - jp: "全部見ますか。飛ばすところはありますか"
+            en: "Do you look at all of it? What do you skip?"
+          - jp: "だいたい、どのくらい時間がかかりますか"
+            en: "Roughly how long does that take?"
+          - jp: "決まったチェックでは拾えないけど、目で見つける間違いは、どんなものですか"
+            en: "What kind of mistake do you catch with your eyes that a checklist would miss?"
+      - id: cb-2
+        jp: "見なくても大丈夫だと思えるのは、どういうところですか。それは、いつからそうなりましたか"
+        en: "What do you no longer need to check? When did that become true?"
+        probes:
+          - jp: "信頼できるようになったきっかけは、何でしたか"
+            en: "What earned that trust?"
+          - jp: "これだけは自分で見ないと気が済まない、というのはありますか"
+            en: "Is there something you must always check yourself, whoever made it?"
+      - id: cb-3
+        jp: "見たつもりでいて、あとで見つかった間違いがありますか。どこで見つかりましたか"
+        en: "Has a mistake got past you and been found later? Where was it found?"
+        probes:
+          - jp: "それ以来、見るところは変わりましたか"
+            en: "Did that change what you check?"
+      - id: cb-4
+        jp: "AIが出したものを受け取るとしたら、何が一緒に来ていれば、全部を見なくて済みますか"
+        en: "If an AI handed you something it made, what would have to come with it for you to not need to check everything?"
+        probes:
+          - jp: "何が書いてあったら『これは読めない』と捨てますか"
+            en: "What would make you throw it out unread?"
+      - id: role-1
+        jp: "もし、手を動かす時間が今の半分になったら、その時間で何をしますか"
+        en: "If making the thing took half the time it takes now, what would you do with the rest?"
+        note: "not a process question: the answer is what the organisation believes this person is for"
+        probes:
+          - jp: "いま、時間がなくてできていないことはありますか"
+            en: "Is there anything you cannot get to now for lack of time?"
+  - id: tool-refusals
+    title_jp: ツールが断ること
+    priority: optional
+    mode: discovery
+    goal: what the software will not do, and what they will not trust
+    items:
+      - id: rf-1
+        jp: "ふだん使っている道具の外でやっている仕事はありますか。どうして外に出しているのですか"
+        en: "Is there work you keep outside your usual tools? Why?"
+      - id: rf-2
+        jp: "道具がこちらの代わりに決めてしまうことって、ありますか。それはどこですか"
+        en: "Does your software ever decide something on your behalf? Where?"
+      - id: rf-3
+        jp: "AIが変更を提案して、あなたが承認するか却下する仕組みを使ったことはありますか。その時どう思いましたか"
+        en: "Have you used a propose-and-accept AI? What did you make of it?"
+
+closing:
+  - jp: "最後に、私が作るツールについて、これを聞かれて嬉しいこと・聞かないでほしいことはありますか"
+    en: "Anything you'd be glad I asked — or wish I hadn't?"

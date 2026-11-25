@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>__TITLE__</title>
+<style>
+  :root { --ink:#1c1917; --muted:#78716c; --line:#e7e5e4; --bg:#faf8f5; --card:#fff; --me:#eef2f4; }
+  * { box-sizing: border-box; }
+  html, body { margin:0; padding:0; background:var(--bg); color:var(--ink);
+    font-family: -apple-system, "Hiragino Sans", "Noto Sans JP", system-ui, sans-serif;
+    font-size:17px; line-height:1.75; -webkit-text-size-adjust:100%; }
+  .wrap { max-width:640px; margin:0 auto; padding:20px 16px 140px; }
+  h1 { font-size:19px; font-weight:600; margin:0 0 4px; }
+  .sub { color:var(--muted); font-size:14px; margin:0 0 16px; }
+  details { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px 14px; margin:0 0 16px; }
+  summary { cursor:pointer; font-weight:600; font-size:15px; }
+  details p, details li { font-size:14.5px; color:#44403c; }
+  details ul { padding-left:1.1em; margin:8px 0; }
+  .progress { font-size:13.5px; color:var(--muted); margin:0 0 14px; }
+  .log { display:flex; flex-direction:column; gap:12px; }
+  .msg { max-width:88%; padding:10px 14px; border-radius:14px; white-space:pre-wrap; word-break:break-word; }
+  .msg p { margin:0; }
+  .msg .en { margin-top:6px; font-size:13.5px; color:var(--muted); }
+  .agent { align-self:flex-start; background:var(--card); border:1px solid var(--line); border-bottom-left-radius:4px; }
+  .subject { align-self:flex-end; background:var(--me); border-bottom-right-radius:4px; }
+  .intro { align-self:center; background:transparent; border:1px dashed var(--line); color:#57534e; font-size:14.5px; max-width:100%; }
+  form { position:fixed; left:0; right:0; bottom:0; background:rgba(250,248,245,.96); border-top:1px solid var(--line);
+    padding:10px 16px calc(10px + env(safe-area-inset-bottom)); }
+  .composer { max-width:640px; margin:0 auto; display:flex; gap:8px; align-items:flex-end; }
+  textarea { flex:1; resize:none; min-height:46px; max-height:160px; padding:11px 12px; font:inherit;
+    border:1px solid var(--line); border-radius:12px; background:var(--card); color:var(--ink); }
+  textarea:focus { outline:2px solid #a8a29e; outline-offset:1px; }
+  button { font:inherit; border:0; border-radius:12px; padding:12px 18px; background:#292524; color:#fafaf9; cursor:pointer; }
+  button[disabled] { opacity:.45; cursor:default; }
+  .start { display:block; width:100%; margin:8px 0 20px; padding:14px; font-size:16px; }
+  .hint { max-width:640px; margin:6px auto 0; font-size:13px; color:var(--muted); min-height:1.2em; }
+  .quit { background:none; color:var(--muted); text-decoration:underline; padding:0; font-size:13px; }
+  .foot { margin-top:18px; text-align:center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>__TITLE__</h1>
+  <p class="sub">ふだんの仕事について、30〜40分ほどお話を聞かせてください。</p>
+
+  <details open>
+    <summary>これは何？</summary>
+    __EXPLAINER__
+  </details>
+
+  <p class="progress" id="progress" aria-live="polite"></p>
+
+  <button class="start" id="start" type="button">はじめる</button>
+
+  <main class="log" id="log" aria-live="polite"></main>
+
+  <div class="foot">
+    <button class="quit" id="quit" type="button">ここで終わる</button>
+  </div>
+</div>
+
+<form id="form">
+  <div class="composer">
+    <textarea id="input" rows="1" placeholder="ここに入力してください" aria-label="あなたの答え"></textarea>
+    <button id="send" type="submit">送信</button>
+  </div>
+  <div class="hint" id="hint" role="status"></div>
+</form>
+
+<script>
+const TOKEN = "__TOKEN__";
+const api = (p) => "/api/s/" + TOKEN + p;
+let busy = false;
+let composing = false;
+
+const log = document.getElementById("log");
+const hint = document.getElementById("hint");
+const input = document.getElementById("input");
+const send = document.getElementById("send");
+const startBtn = document.getElementById("start");
+const progressEl = document.getElementById("progress");
+
+function bubble(kind, text, english) {
+  const el = document.createElement("div");
+  el.className = "msg " + kind;
+  const p = document.createElement("p");
+  p.textContent = text;
+  el.appendChild(p);
+  if (english) {
+    const e = document.createElement("p");
+    e.className = "en";
+    e.textContent = english;
+    el.appendChild(e);
+  }
+  return el;
+}
+
+function paint(state) {
+  log.textContent = "";
+  for (const e of state.events) {
+    if (e.who === "agent") log.appendChild(bubble("agent", e.jp, e.en));
+    else if (e.who === "system" && e.kind === "intro") log.appendChild(bubble("intro", e.jp));
+    else if (e.who === "subject") log.appendChild(bubble("subject", e.jp));
+  }
+  const p = state.progress;
+  progressEl.textContent = "聞けたこと " + p.revealed + " / " + p.total;
+  startBtn.hidden = state.started;
+  window.scrollTo(0, document.body.scrollHeight);
+}
+
+function setBusy(on, message) {
+  busy = on;
+  send.disabled = on;
+  input.disabled = on;
+  hint.textContent = message || "";
+}
+
+async function refresh() {
+  const res = await fetch(api("/state"), { cache: "no-store" });
+  if (!res.ok) throw new Error("state " + res.status);
+  paint(await res.json());
+}
+
+async function post(path, body) {
+  const res = await fetch(api(path), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body || {})
+  });
+  if (!res.ok) throw new Error(path + " " + res.status);
+  return res.json();
+}
+
+async function withBusy(message, fn) {
+  if (busy) return;
+  setBusy(true, message);
+  try {
+    await fn();
+    await refresh();
+  } catch (err) {
+    hint.textContent = "つながりませんでした。もう一度お試しください。";
+    setTimeout(() => { if (hint.textContent) hint.textContent = ""; }, 6000);
+  } finally {
+    setBusy(false, "");
+    input.focus();
+  }
+}
+
+startBtn.addEventListener("click", () => {
+  withBusy("はじめます…", () => post("/start"));
+});
+
+document.getElementById("form").addEventListener("submit", (ev) => {
+  ev.preventDefault();
+  const text = input.value.trim();
+  if (!text || busy) return;
+  input.value = "";
+  input.style.height = "auto";
+  withBusy("考えています…", () => post("/turns", { text: text }));
+});
+
+document.getElementById("quit").addEventListener("click", () => {
+  if (!window.confirm("ここで終わります。よろしいですか？")) return;
+  withBusy("", async () => {
+    await post("/end", { reason: "subject_stopped" });
+    hint.textContent = "ありがとうございました。ここまでにします。";
+  });
+});
+
+input.addEventListener("compositionstart", () => { composing = true; });
+input.addEventListener("compositionend", () => { composing = false; });
+input.addEventListener("input", () => {
+  input.style.height = "auto";
+  input.style.height = Math.min(input.scrollHeight, 160) + "px";
+});
+input.addEventListener("keydown", (ev) => {
+  if (ev.key !== "Enter" || ev.shiftKey) return;
+  if (composing || ev.isComposing || ev.keyCode === 229) return;
+  ev.preventDefault();
+  document.getElementById("form").requestSubmit();
+});
+
+refresh().then(() => input.focus()).catch(() => {
+  hint.textContent = "読み込めませんでした。ページを再読み込みしてください。";
+});
+</script>
+</body>
+</html>

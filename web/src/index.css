@@ -1,0 +1,393 @@
+/* ============================================
+   Claire Design System — shadcn/ui + Tailwind CSS
+   ============================================ */
+
+@import "tailwindcss";
+@import "./typeset.css";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* Satoshi — Indian Type Foundry. Fontshare Free Licence (free for personal &
+   commercial use; not OFL). Self-hosted from Fontshare CDN. */
+/* JetBrains Mono — SIL Open Font License 1.1. Variable wght axis, self-hosted. */
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('./assets/fonts/JetBrainsMono-Variable.woff2') format('woff2');
+  font-weight: 100 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Satoshi';
+  src: url('./assets/fonts/Satoshi-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Satoshi';
+  src: url('./assets/fonts/Satoshi-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Satoshi';
+  src: url('./assets/fonts/Satoshi-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Satoshi';
+  src: url('./assets/fonts/Satoshi-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Satoshi';
+  src: url('./assets/fonts/Satoshi-Black.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@custom-variant dark (&:is(.dark *):not(:is(.light, .light *)));
+
+/* ─────────────────────────────────────────────
+   Layer 1: Tailwind mappings
+   Bridges CSS custom properties → Tailwind classes
+   ───────────────────────────────────────────── */
+@theme inline {
+  --font-sans: 'Satoshi', ui-sans-serif, system-ui;
+  --font-mono: 'JetBrains Mono', ui-monospace;
+
+  /* EVA brand hierarchy */
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-tertiary: var(--tertiary);
+  --color-tertiary-foreground: var(--tertiary-foreground);
+  --color-coral: var(--coral);
+  --color-coral-light: var(--coral-light);
+  --color-coral-foreground: var(--coral-foreground);
+  --color-periwinkle: var(--periwinkle);
+  --color-periwinkle-dark: var(--periwinkle-dark);
+  --color-periwinkle-foreground: var(--periwinkle-foreground);
+
+  /* shadcn semantic tokens */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-inverse: var(--inverse);
+  --color-inverse-foreground: var(--inverse-foreground);
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-tertiary: var(--tertiary);
+  --color-tertiary-foreground: var(--tertiary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-chart-6: var(--chart-6);
+  --color-chart-7: var(--chart-7);
+  --color-chart-8: var(--chart-8);
+  --color-chart-9: var(--chart-9);
+  --color-chart-10: var(--chart-10);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* ─────────────────────────────────────────────
+   Layer 2: EVA brand source palette
+   Named by role, not hue. Values swap per theme in Layer 3.
+   ───────────────────────────────────────────── */
+:root,
+.dark {
+  --radius: 0.5rem;                        /* 8px base — matches Tailwind/shadcn grid */
+
+  /* Kept as legacy aliases only; do not use for new work. */
+  --coral: oklch(0.78 0.08 20);
+  --coral-light: oklch(0.86 0.06 20);
+  --coral-foreground: oklch(1 0 0);
+  --periwinkle: oklch(0.65 0.12 270);
+  --periwinkle-dark: oklch(0.5 0.14 270);
+  --periwinkle-foreground: oklch(1 0 0);
+
+  /* ── Gradients ── */
+  /* Brand aura: radial from the top-right corner, 512px radius.
+     Primary soft tint at the anchor (12%), secondary at mid-falloff (10%),
+     then fading to 0 opacity at the edge. */
+  --gradient-bg: radial-gradient(
+    512px at top right,
+    color-mix(in oklab, var(--primary) 12%, transparent) 0%,
+    color-mix(in oklab, var(--secondary) 10%, transparent) 55%,
+    color-mix(in oklab, var(--secondary) 0%, transparent) 100%
+  );
+}
+
+/* ─────────────────────────────────────────────
+   Layer 3: Role assignment per theme
+   Each theme maps brand colors into semantic roles.
+   ───────────────────────────────────────────── */
+
+:root,
+.light {
+  /* ── Brand-role mapping (EVA hierarchy) ── */
+  --brand: var(--primary);
+  --brand-foreground: var(--primary-foreground);
+  --primary: #a0d6f1;                       /* Light EVA primary — sky blue */
+  --primary-foreground: #0a1c2e;            /* navy text on sky blue */
+  --secondary: #2e6fb5;                     /* azure steel — operational/positive; lightened from #1d446c so small glyphs (race dot, badges) read blue, not navy */
+  --secondary-foreground: #ffffff;
+  --accent: #f0f0e8;                        /* warm surface accent */
+  --accent-foreground: #585850;
+  --tertiary: #b3261e;                      /* red — wayfinding/detail */
+  --tertiary-foreground: #ffffff;
+
+  /* ── Surface & text ── */
+  --background: oklch(0.985 0 0);          /* #fafafa */
+  --foreground: oklch(0.15 0 0);            /* #111 */
+  --card: oklch(1 0 0);                     /* #ffffff */
+  --card-foreground: oklch(0.15 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.15 0 0);
+  --inverse: oklch(0.13 0 0);               /* dark surface - selection tint in light */
+  --inverse-foreground: oklch(0.985 0 0);   /* light text on the inverse surface */
+  --muted: oklch(0.96 0 0);                 /* #f5f5f5 */
+  --muted-foreground: oklch(0.53 0 0);       /* #7a7a7a — AA ≥4.5:1 on bg & muted (was 0.6/#999 at 3.5–3.8:1) */
+
+  /* ── Interactive ── */
+  --border: oklch(0.87 0 0);                /* #ddd */
+  --input: oklch(0.87 0 0);
+  --ring: var(--primary);                   /* focus ring follows primary */
+
+  /* ── Semantic states ── */
+  --destructive: oklch(0.43 0.22 28);       /* #B00020 */
+  --destructive-foreground: oklch(1 0 0);
+  --success: oklch(0.52 0.16 145);          /* #2e7d32 */
+  --success-foreground: oklch(1 0 0);
+  --warning: oklch(0.6 0.18 55);            /* #d97706 */
+  --warning-foreground: oklch(1 0 0);
+  --info: oklch(0.55 0.18 260);             /* #3b82f6 */
+  --info-foreground: oklch(1 0 0);
+
+  /* ── Dataviz (charts) - EVA flag-family series (DESIGN.md, accepted 2026-08-10).
+     Chart series lead with the brand triad: 1 primary, 2 secondary, 3 tertiary,
+     then orange/gold/teal/magenta/lavender; 9-10 extend blue/cyan for >8 series.
+     Badge pills use --color-badge-* (candy palette), NOT these tokens. */
+  --chart-1: #a0d6f1;   /* primary - sky blue */
+  --chart-2: #1d446c;   /* secondary - steel blue */
+  --chart-3: #b3261e;   /* tertiary - oxblood */
+  --chart-4: #c25e0b;   /* orange */
+  --chart-5: #b98a0b;   /* gold */
+  --chart-6: #2f7f8f;   /* teal */
+  --chart-7: #c2368c;   /* magenta */
+  --chart-8: #8a6fa8;   /* lavender */
+  --chart-9: #2563EB;   /* blue - extended series */
+  --chart-10: #0E7490;  /* cyan - extended series */
+
+  /* Asset resolution kicker underlines - light EVA picks: 4K red, 6K purple.
+     6K uses the deep candy purple (#9333EA) instead of pastel chart-8 lavender
+     so the 2px line reads punchy over thumbnails. */
+  --color-reso-4k: #b3261e;   /* chart-3 - oxblood red */
+  --color-reso-6k: #9333ea;   /* deep candy purple (was pastel #8a6fa8) */
+
+  /* ── Sidebar ── */
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.15 0 0);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.955 0 0);
+  --sidebar-accent-foreground: oklch(0.15 0 0);
+  --sidebar-border: oklch(0.87 0 0);
+  --sidebar-ring: var(--ring);
+}
+
+.dark {
+  /* ── Brand-role mapping (EVA hierarchy) ── */
+  --brand: var(--primary);
+  --brand-foreground: var(--primary-foreground);
+  --primary: #765898;                       /* Dark EVA primary — purple */
+  --primary-foreground: #ffffff;
+  --secondary: #52d053;                     /* EVA green — operational/positive */
+  --secondary-foreground: #0a0808;
+  --accent: #1d1819;                        /* warm dark surface accent */
+  --accent-foreground: #f2efee;
+  --tertiary: #c62a3e;                      /* crimson — wayfinding/detail */
+  --tertiary-foreground: #ffffff;
+
+  /* ── Surface & text ── */
+  --background: oklch(0.13 0 0);
+  --foreground: oklch(0.95 0 0);
+  --card: oklch(0.08 0 0);
+  --card-foreground: oklch(0.95 0 0);
+  --popover: oklch(0.08 0 0);
+  --popover-foreground: oklch(0.95 0 0);
+  --inverse: oklch(0.985 0 0);              /* light surface - selection tint in dark */
+  --inverse-foreground: oklch(0.13 0 0);    /* dark text on the inverse surface */
+  --muted: oklch(0.22 0 0);
+  --muted-foreground: oklch(0.68 0 0);
+
+  /* ── Interactive ── */
+  --border: oklch(0.3 0 0);
+  --input: oklch(0.3 0 0);
+  --ring: var(--primary);
+
+  /* ── Semantic states ── */
+  --destructive: oklch(0.52 0.19 28);
+  --destructive-foreground: oklch(0.9 0 0);
+  --success: oklch(0.5 0.12 145);
+  --success-foreground: oklch(0.95 0 0);
+  --warning: oklch(0.52 0.16 55);
+  --warning-foreground: oklch(0.95 0 0);
+  --info: oklch(0.5 0.15 260);
+  --info-foreground: oklch(0.95 0 0);
+
+  /* ── Dataviz (charts) - EVA flag-family series, dark values ── */
+  --chart-1: #765898;   /* primary - purple */
+  --chart-2: #52d053;   /* secondary - EVA green */
+  --chart-3: #c62a3e;   /* tertiary - crimson */
+  --chart-4: #e6770b;   /* orange */
+  --chart-5: #f6c026;   /* gold */
+  --chart-6: #68a8a8;   /* teal */
+  --chart-7: #d94a9c;   /* magenta */
+  --chart-8: #b9a3c9;   /* lavender */
+  --chart-9: #60A5FA;   /* blue - extended series */
+  --chart-10: #22D3EE;  /* cyan - extended series */
+
+  /* Asset resolution kicker underlines - dark EVA picks: 4K orange, 6K green. */
+  --color-reso-4k: #e6770b;   /* chart-4 - orange */
+  --color-reso-6k: #52d053;   /* chart-2 - EVA green */
+
+  /* ── Sidebar ── */
+  --sidebar: oklch(0.15 0 0);
+  --sidebar-foreground: oklch(0.95 0 0);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.22 0 0);
+  --sidebar-accent-foreground: oklch(0.95 0 0);
+  --sidebar-border: oklch(0.25 0 0);
+  --sidebar-ring: var(--ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   Sonner toast color tokens
+   Map sonner's CSS variables to Claire theme tokens
+   so toasts follow light/dark mode and semantic colors.
+   ───────────────────────────────────────────── */
+.toaster {
+  --normal-bg: var(--muted);
+  --normal-text: var(--popover-foreground);
+  --normal-border: var(--border);
+  --border-radius: var(--radius-lg);
+
+  /* richColors path (Sonner's first-party theming): every variant token is
+     paired with a muted tint, mirroring the alert primitive - bg = token
+     12% over muted, border = token 40%, text = token. */
+  --success-bg: color-mix(in oklab, var(--success) 12%, var(--muted));
+  --success-text: var(--success);
+  --success-border: color-mix(in oklab, var(--success) 40%, transparent);
+
+  --info-bg: color-mix(in oklab, var(--info) 12%, var(--muted));
+  --info-text: var(--info);
+  --info-border: color-mix(in oklab, var(--info) 40%, transparent);
+
+  --warning-bg: color-mix(in oklab, var(--warning) 12%, var(--muted));
+  --warning-text: var(--warning);
+  --warning-border: color-mix(in oklab, var(--warning) 40%, transparent);
+
+  --error-bg: color-mix(in oklab, var(--destructive) 12%, var(--muted));
+  --error-text: var(--destructive);
+  --error-border: color-mix(in oklab, var(--destructive) 40%, transparent);
+
+  font-family: var(--font-sans);
+}
+
+.cn-toast {
+  border: 1px solid var(--normal-border);
+  border-radius: var(--radius-lg);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 2px 8px rgba(0, 0, 0, 0.06);
+  font-family: var(--font-sans);
+}
+
+/*
+ * glow-ring - soft brand glow for active/streaming surfaces.
+ * Shared via --glow-ring-shadow so streaming (glow-ring) and focus-within
+ * use the identical glow. Primary hue, theme-aware opacity.
+ */
+:root,
+.light {
+  --glow-ring-shadow:
+    0 0 0 1px rgba(160, 214, 241, 0.3),
+    0 0 12px rgba(160, 214, 241, 0.25),
+    0 0 32px rgba(160, 214, 241, 0.2);
+}
+.dark {
+  --glow-ring-shadow:
+    0 0 0 1px rgba(118, 88, 152, 0.4),
+    0 0 16px rgba(118, 88, 152, 0.3),
+    0 0 48px rgba(118, 88, 152, 0.25);
+}
+
+/* Explicit glow (streaming, active states). */
+.glow-ring {
+  box-shadow: var(--glow-ring-shadow);
+}
+
+/* Soft glow when the card has focus (e.g. typing in the prompt) - no border progress. */
+[data-slot='ai-card']:focus-within {
+  box-shadow: var(--glow-ring-shadow);
+}

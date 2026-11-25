@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.m4a
+*.wav
+.env
+.env.*
+web/node_modules/
+web/dist/
+
+# Research data is personal data. Transcripts and live session configs never leave the machine.
+transcripts/
+sessions/*.json
+!sessions/example.json

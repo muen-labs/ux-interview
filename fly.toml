@@ -1,0 +1,35 @@
+# One machine, one writer: a conversation is a single-writer workload, and a second
+# machine would need shared storage for no benefit.
+app = "ux-interview"
+primary_region = "nrt"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  KIT_PROVIDER = "deepseek"
+  PORT = "8080"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  # A session is a conversation: do not stop the machine underneath someone mid-answer.
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
+
+[[mounts]]
+  source = "data"
+  destination = "/data"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"
+
+[checks]
+  [checks.health]
+    type = "http"
+    port = 8080
+    path = "/healthz"
+    interval = "30s"
+    timeout = "5s"
