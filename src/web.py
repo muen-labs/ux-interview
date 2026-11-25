@@ -190,7 +190,7 @@ def render_page(token, cfg):
 # ---- http -------------------------------------------------------------------
 
 class Handler(BaseHTTPRequestHandler):
-    server_version = "interview-kit"
+    server_version = "ux-interview"
     protocol_version = "HTTP/1.1"
 
     def log_message(self, fmt, *args):
