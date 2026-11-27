@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import Composer from './components/blocks/Composer'
+import MuenLogo from './components/MuenLogo'
 import { tokenFromLocation, useInterview, type InterviewEvent } from './useInterview'
 
 /**
@@ -44,9 +45,17 @@ export default function App() {
 
   return (
     <div className="flex h-dvh w-full flex-col bg-background text-foreground">
-      <header className="flex items-center justify-between border-b px-5 py-3">
-        <h1 className="text-base font-semibold">インタビュー</h1>
-        <div className="flex items-center gap-3 text-sm text-muted-foreground">
+      <header className="border-b border-border">
+        <div className="flex items-center justify-between gap-3 px-4 py-3 sm:px-6">
+          <div className="flex min-w-0 items-center gap-3">
+            {/* The wordmark is pinned: 313×72 intrinsic, 20px tall in chrome. */}
+            <MuenLogo className="h-5 w-[87px] flex-none text-foreground" />
+            <span aria-hidden className="hidden h-4 w-px bg-border sm:block" />
+            <span className="whitespace-nowrap font-mono text-[10px] tracking-[0.12em] text-muted-foreground">
+              UX INTERVIEW
+            </span>
+          </div>
+          <div className="flex shrink-0 items-center gap-3 text-sm text-muted-foreground">
           {lastError ? (
             <span className="rounded-full bg-destructive/10 px-2 py-0.5 text-destructive">
               接続エラー
@@ -56,8 +65,10 @@ export default function App() {
           <button type="button" className="underline lg:hidden" onClick={() => setShowTranscript((v) => !v)}>
             {showTranscript ? '会話' : '文字起こし'}
           </button>
+          </div>
         </div>
       </header>
+      <h1 className="sr-only">UX interview</h1>
 
       <div className="flex min-h-0 flex-1">
         <main className={'min-w-0 flex-1 flex-col ' + (showTranscript ? 'hidden lg:flex' : 'flex')}>

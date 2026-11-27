@@ -364,6 +364,10 @@ def main():
     ap.add_argument("--port", type=int, default=int(os.environ.get("PORT", 8765)))
     ap.add_argument("--host", default=os.environ.get("KIT_HOST", "127.0.0.1"))
     args = ap.parse_args()
+    # A fresh clone has no transcripts/ or sessions/ yet: make them before serving, or the
+    # first turn fails on a missing directory rather than on anything interesting.
+    (ROOT / "transcripts").mkdir(exist_ok=True)
+    SESSIONS.mkdir(exist_ok=True)
     if args.new:
         return new_session(args.new, args.port)
     # A deployed server serves whatever sessions exist; a local one is usually one interview.
